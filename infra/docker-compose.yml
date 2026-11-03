@@ -5,9 +5,9 @@ services:
     image: postgres:16-alpine
     container_name: outbox-postgres
     environment:
-      POSTGRES_DB: outbox_db
-      POSTGRES_USER: outbox_user
-      POSTGRES_PASSWORD: outbox_password
+      POSTGRES_DB: order_db
+      POSTGRES_USER: order_user
+      POSTGRES_PASSWORD: order_password
     ports:
       - "5432:5432"
     # Enable logical replication for Debezium CDC
@@ -15,7 +15,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U outbox_user -d outbox_db" ]
+      test: [ "CMD-SHELL", "pg_isready -U order_user -d order_db" ]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -107,9 +107,9 @@ services:
       kafka:
         condition: service_healthy
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/outbox_db
-      SPRING_DATASOURCE_USERNAME: outbox_user
-      SPRING_DATASOURCE_PASSWORD: outbox_password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/order_db
+      SPRING_DATASOURCE_USERNAME: order_user
+      SPRING_DATASOURCE_PASSWORD: order_password
       CLICKHOUSE_DATASOURCE_URL: jdbc:clickhouse://clickhouse:8123/orders_analytics
       SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
 

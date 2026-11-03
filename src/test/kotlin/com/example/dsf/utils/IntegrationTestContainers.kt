@@ -44,9 +44,9 @@ abstract class IntegrationTestContainers {
             PostgreSQLContainer("postgres:16-alpine")
                 .withNetwork(network)
                 .withNetworkAliases("postgres")
-                .withDatabaseName("outbox_db")
-                .withUsername("outbox_user")
-                .withPassword("outbox_password")
+                .withDatabaseName("order_db")
+                .withUsername("order_user")
+                .withPassword("order_password")
                 .withCommand("postgres", "-c", "wal_level=logical", "-c", "max_replication_slots=4", "-c", "max_wal_senders=4")
 
         val clickhouse: ClickHouseContainer =

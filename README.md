@@ -151,7 +151,7 @@ The `app` service belongs to the `app` Compose profile. Run `docker compose up -
 | Swagger UI               | `http://localhost:8080/swagger-ui.html`                  |
 | Kafka UI                 | `http://localhost:8082`                                  |
 | Kafka Connect REST API   | `http://localhost:8083/connectors`                       |
-| PostgreSQL               | `localhost:5432` (`outbox_db`)                           |
+| PostgreSQL               | `localhost:5432` (`order_db`)                           |
 | ClickHouse HTTP / native | `localhost:8123` / `localhost:9000` (`orders_analytics`) |
 | Kafka (host listener)    | `localhost:9092`                                         |
 
