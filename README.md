@@ -1,15 +1,20 @@
-# Transactional Outbox Pattern with Spring Boot, Debezium, Kafka, and ClickHouse
+# ClickHouse for Analytics and Time Travel Queries
 
-This repository is a practical implementation of the **Transactional Outbox Pattern** built with a **Spring Boot + Kotlin** application. The project serves as an architectural blueprint for decoupled microservices, demonstrating how to securely manage data persistence and asynchronous event distribution without falling into the common pitfalls of distributed systems. The order history read model lives in **ClickHouse**, which supports point-in-time queries (time travel) over every version of an order.
+This repository shows how to use **ClickHouse** as a dedicated analytics and reporting store next to a transactional **PostgreSQL** database. PostgreSQL stays the source of truth for the current state of each order. ClickHouse keeps every version of every order, so reporting queries such as point-in-time snapshots (time travel), status timelines and aggregations run on a columnar engine built for them, not on the transactional database.
+
+The data reaches ClickHouse through the **Transactional Outbox Pattern** with **Debezium** and **Kafka**, built with **Spring Boot + Kotlin**. This keeps both stores consistent without dual writes.
 
 ## What Problem Am I Trying to Practice?
+
+### The Analytical Problem: Reporting on a Transactional Database
+Running history and reporting queries on PostgreSQL competes with order writes, and row-oriented storage scales poorly for scans and aggregations over many versions. ClickHouse stores the history in columns, partitions it by month and corrects it in place with lightweight updates, so reports stay fast while PostgreSQL serves the order API.
 
 ### The Business Scenario: Orders and Their History
 The application manages orders. An order is created, changes its status (`CREATED`, `PROCESSING`, `COMPLETED`, `CANCELLED`), and can have its total amount corrected. PostgreSQL stores the current state of each order.
 
 The order history keeps every version of each order in ClickHouse, so it can show how all orders looked at any point in time. The history is updated asynchronously from Kafka events, so writing an order does not depend on ClickHouse being available.
 
-### The Architectural Problem: Dual Writes
+### The Integration Problem: Getting Data into ClickHouse Reliably
 Saving the order in PostgreSQL and then publishing an event to Kafka are two separate writes, and either can fail on its own:
 * **Kafka fails after the database commit:** The order is saved, but the event is lost, so the history never sees the change.
 * **The database fails after the event is sent:** The history records a change that was rolled back.
