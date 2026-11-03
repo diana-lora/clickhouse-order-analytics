@@ -5,7 +5,7 @@ import com.example.dsf.commons.OrderRepairEvent
 import com.example.dsf.commons.OrderRepairStep
 import com.example.dsf.commons.OrderStatus
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.history.domain.OrderHistory
 import com.example.dsf.history.domain.OrderHistoryRepository
 import io.mockk.every
@@ -92,7 +92,7 @@ class ProcessOrderHistoryServiceTest {
         every { orderHistoryRepository.updateTotalAmount(any(), any(), any(), any()) } just runs
 
         service.correctOrderTotalAmount(
-            OrderTotalAmountUpdateEvent(orderId.toString(), "customer-1", BigDecimal("9.90"), createdAt),
+            OrderTotalAmountRepairEvent(orderId.toString(), "customer-1", BigDecimal("9.90"), createdAt),
         )
 
         verify { orderHistoryRepository.updateTotalAmount(orderId, "customer-1", createdAt, BigDecimal("9.90")) }

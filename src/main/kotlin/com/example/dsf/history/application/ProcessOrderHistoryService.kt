@@ -3,7 +3,7 @@ package com.example.dsf.history.application
 import com.example.dsf.commons.OrderCreatedEvent
 import com.example.dsf.commons.OrderRepairEvent
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.history.domain.OrderHistory
 import com.example.dsf.history.domain.OrderHistoryRepository
 import org.springframework.beans.factory.annotation.Qualifier
@@ -73,7 +73,7 @@ class ProcessOrderHistoryService(
         orderHistoryRepository.deleteVersionsBefore(orderId = orderId, version = version)
     }
 
-    fun correctOrderTotalAmount(event: OrderTotalAmountUpdateEvent) {
+    fun correctOrderTotalAmount(event: OrderTotalAmountRepairEvent) {
         orderHistoryRepository.updateTotalAmount(
             orderId = UUID.fromString(event.orderId),
             customerId = event.customerId,

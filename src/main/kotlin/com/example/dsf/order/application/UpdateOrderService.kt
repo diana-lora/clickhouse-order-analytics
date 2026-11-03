@@ -1,7 +1,7 @@
 package com.example.dsf.order.application
 
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.commons.nowInMillis
 import com.example.dsf.order.application.commands.UpdateOrderStatusCommand
 import com.example.dsf.order.application.commands.UpdateOrderTotalAmountCommand
@@ -55,7 +55,7 @@ class UpdateOrderService(
         val savedOrder = orderRepository.save(order)
 
         val updatedEvent =
-            OrderTotalAmountUpdateEvent(
+            OrderTotalAmountRepairEvent(
                 orderId = savedOrder.id.toString(),
                 customerId = savedOrder.customerId,
                 newTotalAmount = savedOrder.totalAmount,

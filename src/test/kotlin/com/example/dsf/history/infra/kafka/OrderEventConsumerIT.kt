@@ -6,7 +6,7 @@ import com.example.dsf.commons.OrderRepairEvent
 import com.example.dsf.commons.OrderRepairStep
 import com.example.dsf.commons.OrderStatus
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.config.KafkaConfig
 import com.example.dsf.history.application.queries.GetOrderHistoryQuery
 import com.example.dsf.history.domain.OrderHistory
@@ -89,12 +89,12 @@ class OrderEventConsumerIT : IntegrationTestContainers() {
     }
 
     @Test
-    fun `should patch an ORDER_TOTAL_AMOUNT_UPDATED event into every version without a new one`() {
+    fun `should patch an ORDER_TOTAL_AMOUNT_REPAIR event into every version without a new one`() {
         publish(created)
         publish(processing)
         val processingVersion = awaitLatestState { assertThat(it.orderStatus).isEqualTo(OrderStatus.PROCESSING) }.version
 
-        publish(OrderTotalAmountUpdateEvent(orderId.toString(), customerId, BigDecimal("9.90"), createdAt))
+        publish(OrderTotalAmountRepairEvent(orderId.toString(), customerId, BigDecimal("9.90"), createdAt))
 
         val latest = awaitLatestState { assertThat(it.totalAmount).isEqualByComparingTo("9.90") }
         assertThat(latest.orderStatus).isEqualTo(OrderStatus.PROCESSING)

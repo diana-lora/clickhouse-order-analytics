@@ -5,10 +5,10 @@ import com.example.dsf.commons.OrderEvent
 import com.example.dsf.commons.OrderEventType.ORDER_CREATED
 import com.example.dsf.commons.OrderEventType.ORDER_REPAIR
 import com.example.dsf.commons.OrderEventType.ORDER_STATUS_UPDATED
-import com.example.dsf.commons.OrderEventType.ORDER_TOTAL_AMOUNT_UPDATED
+import com.example.dsf.commons.OrderEventType.ORDER_TOTAL_AMOUNT_REPAIR
 import com.example.dsf.commons.OrderRepairEvent
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.config.KafkaConfig.Companion.ORDER_EVENTS_TOPIC
 import com.example.dsf.order.domain.Order
 import com.example.dsf.order.domain.outbox.OutboxEvent
@@ -47,7 +47,7 @@ class OutboxEventService(
         when (event) {
             is OrderCreatedEvent -> ORDER_CREATED
             is OrderStatusUpdatedEvent -> ORDER_STATUS_UPDATED
-            is OrderTotalAmountUpdateEvent -> ORDER_TOTAL_AMOUNT_UPDATED
+            is OrderTotalAmountRepairEvent -> ORDER_TOTAL_AMOUNT_REPAIR
             is OrderRepairEvent -> ORDER_REPAIR
         }
 }

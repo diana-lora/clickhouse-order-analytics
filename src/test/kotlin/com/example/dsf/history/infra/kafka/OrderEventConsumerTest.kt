@@ -6,7 +6,7 @@ import com.example.dsf.commons.OrderRepairEvent
 import com.example.dsf.commons.OrderRepairStep
 import com.example.dsf.commons.OrderStatus
 import com.example.dsf.commons.OrderStatusUpdatedEvent
-import com.example.dsf.commons.OrderTotalAmountUpdateEvent
+import com.example.dsf.commons.OrderTotalAmountRepairEvent
 import com.example.dsf.config.KafkaConfig
 import com.example.dsf.history.application.ProcessOrderHistoryService
 import com.fasterxml.jackson.core.JsonProcessingException
@@ -48,7 +48,7 @@ class OrderEventConsumerTest {
 
     @Test
     fun `should correct the total amount without using the offset`() {
-        val event = OrderTotalAmountUpdateEvent("order-1", "customer-1", BigDecimal("9.90"), createdAt)
+        val event = OrderTotalAmountRepairEvent("order-1", "customer-1", BigDecimal("9.90"), createdAt)
 
         consumer.consumeOrderCreatedEvent(toJson(event), offset = 44)
 
